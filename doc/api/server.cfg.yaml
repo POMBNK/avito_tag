@@ -1,0 +1,6 @@
+package: tag
+generate:
+  chi-server: true
+  strict-server: true
+  embedded-spec: true
+output: internal/delivery/tag/api-server.gen.go
