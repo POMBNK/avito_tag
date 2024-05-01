@@ -2,17 +2,19 @@ package main
 
 import (
 	"context"
-	"github.com/POMBNK/avitotag/internal/delivery/tag"
-	"github.com/POMBNK/avitotag/internal/pkg/client/postgres"
-	tagStorage "github.com/POMBNK/avitotag/internal/repository/tag"
-	tagService "github.com/POMBNK/avitotag/internal/service/tag"
-	"github.com/go-chi/chi/v5"
+	"log"
 	"net"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/POMBNK/avitotag/internal/delivery/banner"
+	"github.com/POMBNK/avitotag/internal/pkg/client/postgres"
+	tagStorage "github.com/POMBNK/avitotag/internal/repository/banner"
+	tagService "github.com/POMBNK/avitotag/internal/service/banner"
+	"github.com/go-chi/chi/v5"
 )
 
 func main() {
@@ -22,17 +24,16 @@ func main() {
 	}
 	repository := tagStorage.New(pgClient)
 	service := tagService.New(repository)
-	_ = service
 
-	engine := chi.NewRouter()
+	engine := chi.NewMux()
 	var listener net.Listener
 	var listenErr error
 	listener, listenErr = net.Listen("tcp", "127.0.0.1:8080")
 	if listenErr != nil {
-		panic(listenErr)
+		log.Fatal(listenErr)
 	}
 	server := http.Server{
-		Handler:      tag.New(engine).Register(),
+		Handler:      banner.New(service).Register(engine),
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}

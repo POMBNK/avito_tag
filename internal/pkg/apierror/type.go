@@ -41,5 +41,5 @@ func Newf(code int, message string, err error, args ...interface{}) *ApiError {
 }
 
 func internalError(err error) *ApiError {
-	return New(500, "Internal server error", err)
+	return New(500, fmt.Sprintf("Internal server error: %s\n", err.Error()), err)
 }

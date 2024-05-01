@@ -1,4 +1,4 @@
-package: tag
+package: banner
 generate:
   models: true
-output: internal/delivery/tag/dto.go
+output: internal/delivery/banner/dto.go

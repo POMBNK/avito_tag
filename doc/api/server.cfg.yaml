@@ -1,6 +1,6 @@
-package: tag
+package: banner
 generate:
   chi-server: true
   strict-server: true
   embedded-spec: true
-output: internal/delivery/tag/api-server.gen.go
+output: internal/delivery/banner/api-server.gen.go
