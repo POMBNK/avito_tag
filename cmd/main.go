@@ -38,6 +38,9 @@ func main() {
 	service := bannerService.New(repository, tagger, featter, pgClient)
 
 	engine := chi.NewMux()
+
+	banner.New(service).Register(engine)
+
 	var listener net.Listener
 	var listenErr error
 	listener, listenErr = net.Listen("tcp", "127.0.0.1:8080")
@@ -45,7 +48,7 @@ func main() {
 		log.Fatal(listenErr)
 	}
 	server := http.Server{
-		Handler:      banner.New(service).Register(engine),
+		Handler:      engine,
 		WriteTimeout: 120 * time.Second,
 		ReadTimeout:  120 * time.Second,
 	}
