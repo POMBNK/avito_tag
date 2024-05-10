@@ -17,6 +17,8 @@ func SimpleMiddleware(f StrictHandlerFunc, operationID string) StrictHandlerFunc
 		if accessToken == "" {
 			w.WriteHeader(http.StatusUnauthorized)
 			w.Write([]byte("Unauthorized"))
+
+			return nil, nil
 		}
 
 		scopes := ctx.Value(TokenScopes).([]string)
