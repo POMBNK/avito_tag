@@ -65,11 +65,17 @@ func (d *Db) Query(ctx context.Context, query string, args ...interface{}) (pgx.
 		if err != nil {
 			return nil, err
 		}
-		defer rows.Close()
+		//defer rows.Close()
 
 		return rows, nil
 	}
-	return d.pool.Query(ctx, query, args...)
+	rows, err := d.pool.Query(ctx, query, args...)
+	//defer rows.Close()
+	if err != nil {
+		return nil, err
+	}
+
+	return rows, err
 }
 
 func (d *Db) QueryRow(ctx context.Context, query string, args ...any) pgx.Row {

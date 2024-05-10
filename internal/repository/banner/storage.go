@@ -2,7 +2,7 @@ package banner
 
 import (
 	"context"
-
+	"encoding/json"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/POMBNK/avitotag/internal/entity"
 	"github.com/POMBNK/avitotag/internal/pkg/client/postgres"
@@ -17,14 +17,15 @@ func New(conn postgres.Client) *Storage {
 }
 
 func (s *Storage) CreateBanner(ctx context.Context, banner entity.Banner) (int, error) {
+	jsonb, err := json.Marshal(banner.Content)
+	if err != nil {
+		return 0, err
+	}
 	insertBuilder := sq.Insert("banners").PlaceholderFormat(sq.Dollar).
 		Columns("content", "feature_id", "is_active").
-		Values(banner.Content, banner.FeatureId, banner.IsActive).
+		Values(jsonb, banner.FeatureId, banner.IsActive).
 		Suffix("RETURNING id")
-	//jsonb, err := json.Marshal(banner.Content)
-	//if err != nil {
-	//	return 0, err
-	//}
+
 	query, args, err := insertBuilder.ToSql()
 	if err != nil {
 		return 0, err

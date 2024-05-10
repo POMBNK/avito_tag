@@ -13,7 +13,6 @@ func ResponseErrorHandler() ResponseErrorHandlerFunc {
 		switch {
 		case errors.As(err, &apiErr):
 			handleAppErr(w, err)
-
 		default:
 			w.WriteHeader(http.StatusTeapot)
 			w.Write(internalError(err).Marshal())

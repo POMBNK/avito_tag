@@ -5,7 +5,7 @@ SELECT 'up SQL query';
 CREATE TABLE IF NOT EXISTS banners (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100),
-    feature_id INT UNIQUE,
+    feature_id INT,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NULL,
     content JSONB,

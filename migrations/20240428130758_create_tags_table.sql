@@ -3,7 +3,7 @@
 SELECT 'up SQL query';
 -- +goose StatementEnd
 CREATE TABLE IF NOT EXISTS tags (
-    id SERIAL PRIMARY KEY,
+    id integer PRIMARY KEY,
     name VARCHAR(100) UNIQUE
 );
 -- +goose Down

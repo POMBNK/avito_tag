@@ -12,8 +12,12 @@ import (
 
 	"github.com/POMBNK/avitotag/internal/delivery/banner"
 	"github.com/POMBNK/avitotag/internal/pkg/client/postgres"
-	tagStorage "github.com/POMBNK/avitotag/internal/repository/banner"
-	tagService "github.com/POMBNK/avitotag/internal/service/banner"
+	bannerStorage "github.com/POMBNK/avitotag/internal/repository/banner"
+	featStorage "github.com/POMBNK/avitotag/internal/repository/feature"
+	tagStorage "github.com/POMBNK/avitotag/internal/repository/tag"
+	bannerService "github.com/POMBNK/avitotag/internal/service/banner"
+	featService "github.com/POMBNK/avitotag/internal/service/feature"
+	tagService "github.com/POMBNK/avitotag/internal/service/tag"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -22,8 +26,16 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	repository := tagStorage.New(pgClient)
-	service := tagService.New(repository)
+	// tag init
+	tagRepo := tagStorage.New(pgClient)
+	tagger := tagService.New(tagRepo)
+
+	featRepo := featStorage.New(pgClient)
+	featter := featService.New(featRepo)
+
+	// banner init
+	repository := bannerStorage.New(pgClient)
+	service := bannerService.New(repository, tagger, featter, pgClient)
 
 	engine := chi.NewMux()
 	var listener net.Listener
@@ -34,8 +46,8 @@ func main() {
 	}
 	server := http.Server{
 		Handler:      banner.New(service).Register(engine),
-		WriteTimeout: 15 * time.Second,
-		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 120 * time.Second,
+		ReadTimeout:  120 * time.Second,
 	}
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGTERM)

@@ -34,10 +34,10 @@ func (d *Db) WithTx(ctx context.Context, fn func(ctx context.Context) error) err
 
 	// todo: Добавить в рабочий проект.
 	// бага в рабочем проекте оказывается тут :)
-	nestedTx := fromContext(ctx)
-	if nestedTx != nil && nestedTx.IsActive {
-		return fn(ctx)
-	}
+	//nestedTx := fromContext(ctx)
+	//if nestedTx != nil && nestedTx.IsActive {
+	//	return fn(ctx)
+	//}
 
 	txx, err := d.pool.BeginTx(ctx, pgx.TxOptions{})
 	if err != nil {

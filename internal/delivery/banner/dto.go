@@ -17,7 +17,7 @@ type GetBannerParams struct {
 // PostBannerJSONBody defines parameters for PostBanner.
 type PostBannerJSONBody struct {
 	// Content Содержимое баннера
-	Content *map[string]interface{} `json:"content,omitempty"`
+	Content map[string]interface{} `json:"content,omitempty"`
 
 	// FeatureId Идентификатор фичи
 	FeatureId *int `json:"feature_id,omitempty"`
@@ -26,7 +26,7 @@ type PostBannerJSONBody struct {
 	IsActive *bool `json:"is_active,omitempty"`
 
 	// TagIds Идентификаторы тэгов
-	TagIds *[]int `json:"tag_ids,omitempty"`
+	TagIds []int `json:"tag_ids,omitempty"`
 }
 
 // PostBannerParams defines parameters for PostBanner.

@@ -5,10 +5,8 @@ import (
 	"github.com/POMBNK/avitotag/internal/pkg/apierror"
 	"net/http"
 
-	"github.com/POMBNK/avitotag/internal/entity"
 	"github.com/POMBNK/avitotag/internal/service"
 	"github.com/go-chi/chi/v5"
-	"go.openly.dev/pointy"
 )
 
 type Server struct {
@@ -34,14 +32,8 @@ func (s *Server) GetBanner(ctx context.Context, request GetBannerRequestObject) 
 
 func (s *Server) PostBanner(ctx context.Context, request PostBannerRequestObject) (PostBannerResponseObject, error) {
 
-	//banner := *BannerDTOToEntity((*PostBannerJSONBody)(request.Body))
-	banner := PostBannerJSONBody{
-		Content:   nil,
-		FeatureId: pointy.Int(1),
-		IsActive:  pointy.Bool(true),
-		TagIds:    nil,
-	}
-	bannerID, err := s.service.CreateBanner(ctx, entity.Banner(banner))
+	banner := ToEntity(request)
+	bannerID, err := s.service.CreateBannerWithEntities(ctx, banner)
 	if err != nil {
 		errS := err.Error()
 		errResp := PostBanner400JSONResponse{

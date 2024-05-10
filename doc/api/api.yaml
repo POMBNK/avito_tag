@@ -167,14 +167,17 @@ paths:
               type: object
               properties:
                 tag_ids:
+                  x-go-type-skip-optional-pointer: true
                   type: array
                   description: Идентификаторы тэгов
                   items:
                     type: integer
+                    x-go-type-skip-optional-pointer: true
                 feature_id:
                   type: integer
                   description: Идентификатор фичи
                 content:
+                  x-go-type-skip-optional-pointer: true
                   type: object
                   description: Содержимое баннера
                   additionalProperties: true
