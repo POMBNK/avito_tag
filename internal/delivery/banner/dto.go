@@ -7,6 +7,10 @@ import (
 	"time"
 )
 
+const (
+	TokenScopes = "token.Scopes"
+)
+
 // BannerResponseSuccess defines model for BannerResponseSuccess.
 type BannerResponseSuccess struct {
 	// BannerId Идентификатор баннера

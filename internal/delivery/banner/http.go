@@ -19,10 +19,10 @@ func New(service service.BannerService) *Server {
 
 func (s *Server) Register(engine *chi.Mux) http.Handler {
 	return HandlerFromMux(
-		NewStrictHandlerWithOptions(s, nil,
+		NewStrictHandlerWithOptions(s,
+			[]StrictMiddlewareFunc{SimpleMiddleware},
 			StrictHTTPServerOptions{
-				ResponseErrorHandlerFunc: apierror.ResponseErrorHandler(),
-			}), engine)
+				ResponseErrorHandlerFunc: apierror.ResponseErrorHandler()}), engine)
 }
 
 func (s *Server) GetBanner(ctx context.Context, request GetBannerRequestObject) (GetBannerResponseObject, error) {
@@ -39,6 +39,7 @@ func (s *Server) GetBanner(ctx context.Context, request GetBannerRequestObject) 
 
 	resp := make(GetBanner200JSONResponse, 0, len(banners))
 	for _, banner := range banners {
+		banner := banner
 		r := BannerResponseSuccess{
 			BannerId:  &banner.ID,
 			Content:   &banner.Content,

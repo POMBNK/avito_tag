@@ -5,6 +5,8 @@ info:
 paths:
   /user_banner:
     get:
+      security:
+        - token: [user_token]
       summary: Получение баннера для пользователя
       parameters:
         - in: query
@@ -68,6 +70,8 @@ paths:
                     type: string
   /banner:
     get:
+      security:
+        - token: [ user_token ]
       summary: Получение всех баннеров c фильтрацией по фиче и/или тегу
       parameters:
         - in: header
@@ -334,3 +338,9 @@ components:
           type: string
           format: date-time
           description: Дата обновления баннера
+
+  securitySchemes:
+    token:
+      type: apiKey
+      name: token
+      in: header
