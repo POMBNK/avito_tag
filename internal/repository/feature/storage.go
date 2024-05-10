@@ -67,7 +67,7 @@ func (s *Storage) FindByID(ctx context.Context, featureID int) (entity.Feature, 
 
 	var foundFeatureID int
 	err = s.conn.QueryRow(ctx, query, args...).Scan(&foundFeatureID)
-	if err == nil {
+	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return entity.Feature{}, apierror.ErrNotFound
 		}
