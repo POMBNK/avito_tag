@@ -37,8 +37,8 @@ func main() {
 	repository := bannerStorage.New(pgClient)
 	service := bannerService.New(repository, tagger, featter, pgClient)
 
+	// register routes to engine
 	engine := chi.NewMux()
-
 	banner.New(service).Register(engine)
 
 	var listener net.Listener

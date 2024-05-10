@@ -26,13 +26,37 @@ func (s *Server) Register(engine *chi.Mux) http.Handler {
 }
 
 func (s *Server) GetBanner(ctx context.Context, request GetBannerRequestObject) (GetBannerResponseObject, error) {
-	//TODO implement me
-	panic("implement me")
+	searhcParams := ToSearchParams(request)
+
+	banners, err := s.service.AllBanners(ctx, searhcParams)
+	if err != nil {
+		errS := err.Error()
+		errResp := GetBanner500JSONResponse{
+			Error: &errS,
+		}
+		return errResp, err
+	}
+
+	resp := make(GetBanner200JSONResponse, 0, len(banners))
+	for _, banner := range banners {
+		r := BannerResponseSuccess{
+			BannerId:  &banner.ID,
+			Content:   &banner.Content,
+			CreatedAt: &banner.CreatedAt,
+			FeatureId: banner.FeatureId,
+			IsActive:  banner.IsActive,
+			TagIds:    &banner.TagIds,
+			UpdatedAt: banner.UpdatedAt,
+		}
+		resp = append(resp, r)
+	}
+
+	return resp, nil
 }
 
 func (s *Server) PostBanner(ctx context.Context, request PostBannerRequestObject) (PostBannerResponseObject, error) {
 
-	banner := ToEntity(request)
+	banner := ToCreateEntity(request)
 	bannerID, err := s.service.CreateBannerWithEntities(ctx, banner)
 	if err != nil {
 		errS := err.Error()

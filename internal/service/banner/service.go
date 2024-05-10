@@ -97,9 +97,8 @@ func (s *Service) CreateBannerWithEntities(ctx context.Context, banner entity.Ba
 
 	return bannerID, nil
 }
-func (s *Service) AllBanners(ctx context.Context, bannerID int) {
-	//TODO implement me
-	panic("implement me")
+func (s *Service) AllBanners(ctx context.Context, params entity.BannerSearchParams) ([]entity.Banner, error) {
+	return s.storage.AllBanners(ctx, params)
 }
 
 func (s *Service) UpdateBanner(ctx, bannerID int) {

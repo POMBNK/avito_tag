@@ -108,35 +108,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    banner_id:
-                      type: integer
-                      description: Идентификатор баннера
-                    tag_ids:
-                      type: array
-                      description: Идентификаторы тэгов
-                      items:
-                        type: integer
-                    feature_id:
-                      type: integer
-                      description: Идентификатор фичи
-                    content:
-                      type: object
-                      description: Содержимое баннера
-                      additionalProperties: true
-                      example: '{"title": "some_title", "text": "some_text", "url": "some_url"}'
-                    is_active:
-                      type: boolean
-                      description: Флаг активности баннера
-                    created_at:
-                      type: string
-                      format: date-time
-                      description: Дата создания баннера
-                    updated_at:
-                      type: string
-                      format: date-time
-                      description: Дата обновления баннера
+                  $ref: "#/components/schemas/BannerResponseSuccess"
         '401':
           description: Пользователь не авторизован
         '403':
@@ -330,3 +302,35 @@ paths:
                 properties:
                   error:
                     type: string
+
+components:
+  schemas:
+    BannerResponseSuccess:
+      properties:
+        banner_id:
+          type: integer
+          description: Идентификатор баннера
+        tag_ids:
+          type: array
+          description: Идентификаторы тэгов
+          items:
+            type: integer
+        feature_id:
+          type: integer
+          description: Идентификатор фичи
+        content:
+          type: object
+          description: Содержимое баннера
+          additionalProperties: true
+          example: '{"title": "some_title", "text": "some_text", "url": "some_url"}'
+        is_active:
+          type: boolean
+          description: Флаг активности баннера
+        created_at:
+          type: string
+          format: date-time
+          description: Дата создания баннера
+        updated_at:
+          type: string
+          format: date-time
+          description: Дата обновления баннера

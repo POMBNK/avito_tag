@@ -7,7 +7,7 @@ import (
 
 type BannerRepository interface {
 	CreateBanner(ctx context.Context, banner entity.Banner) (int, error)
-	AllBanners()
+	AllBanners(ctx context.Context, params entity.BannerSearchParams) ([]entity.Banner, error)
 	UpdateBanner()
 	DeleteBanner()
 }
