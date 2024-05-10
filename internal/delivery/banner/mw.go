@@ -14,6 +14,11 @@ func SimpleMiddleware(f StrictHandlerFunc, operationID string) StrictHandlerFunc
 	return func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (response interface{}, err error) {
 		// Middleware logic before calling the handler function
 		accessToken := r.Header.Get("token")
+		if accessToken == "" {
+			w.WriteHeader(http.StatusUnauthorized)
+			w.Write([]byte("Unauthorized"))
+		}
+
 		scopes := ctx.Value(TokenScopes).([]string)
 
 		for _, scope := range scopes {
@@ -24,10 +29,10 @@ func SimpleMiddleware(f StrictHandlerFunc, operationID string) StrictHandlerFunc
 			}
 		}
 
-		// Call the original handler function
-
 		// Middleware logic after calling the handler function
+		w.WriteHeader(http.StatusForbidden)
+		w.Write([]byte("Forbidden"))
 
-		return response, err
+		return nil, nil
 	}
 }
