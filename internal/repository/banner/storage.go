@@ -37,6 +37,24 @@ func (s *Storage) CreateBanner(ctx context.Context, banner entity.Banner) (int, 
 		return 0, err
 	}
 
+	insertLinkBuilder := sq.Insert("banner_tags").PlaceholderFormat(sq.Dollar).
+		Columns("banner_id", "tag_id")
+
+	for _, tagID := range banner.TagIds {
+		insertLinkBuilder = insertLinkBuilder.
+			Values(bannerID, tagID)
+	}
+
+	query, args, err = insertLinkBuilder.ToSql()
+	if err != nil {
+		return 0, err
+	}
+
+	_, err = s.conn.Exec(ctx, query, args...)
+	if err != nil {
+		return 0, err
+	}
+
 	return bannerID, nil
 }
 
